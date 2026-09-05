@@ -26,7 +26,7 @@ In the Agnara ecosystem curriculum, reference applications form a structured lea
 From **#001**, you learned how capabilities declare schemas, how `ExecutionPlan` compiles input validation, and how invocations return canonical `Success` and `Failure` values. **#002** builds directly on this foundation by introducing **runtime-owned dependencies** into the capability signature.
 
 ### What is dependency injection here?
-In Agnara, dependency injection separates caller-owned business input from runtime-owned dependencies. The compiled execution plan identifies dependency-backed parameters as protected runtime parameters, so callers provide business payload data while the runtime resolves registered dependencies. In `agnara==0.1.0a2`, supplying a protected runtime-owned parameter through `Invocation.payload` is rejected before the capability handler executes.
+In Agnara, dependency injection separates caller-owned business inputs from runtime-owned dependencies. The compiled execution plan identifies dependency-backed parameters as protected runtime parameters, while the runtime resolves registered dependencies through the DI graph. In `agnara==0.1.0a2`, attempts to supply protected runtime-owned parameters through `Invocation.payload` are rejected before the capability handler executes.
 
 ### What does the caller provide?
 The caller provides **only business data** via `Invocation.payload`. In our primary capability:
