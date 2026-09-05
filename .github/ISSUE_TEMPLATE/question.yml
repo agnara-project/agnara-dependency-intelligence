@@ -1,0 +1,16 @@
+name: Question or Clarification
+description: Ask a question about Agnara Historical Reference Application #002
+title: "[Question]: "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please note: This is a frozen reference application illustrating Dependency Injection in `agnara==0.1.0a2`.
+  - type: textarea
+    id: question
+    attributes:
+      label: Your Question
+      description: What would you like to clarify regarding providers, DIRegistry, DAG compilation, or parameter isolation?
+    validations:
+      required: true
