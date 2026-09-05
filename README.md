@@ -26,7 +26,7 @@ In the Agnara ecosystem curriculum, reference applications form a structured lea
 From **#001**, you learned how capabilities declare schemas, how `ExecutionPlan` compiles input validation, and how invocations return canonical `Success` and `Failure` values. **#002** builds directly on this foundation by introducing **runtime-owned dependencies** into the capability signature.
 
 ### What is dependency injection here?
-In Agnara, dependency injection is not just an object-wiring convenience; it is an **architectural security boundary**. It guarantees that the caller provides only business parameters, while infrastructure services, repositories, and secrets are supplied and controlled strictly by the runtime environment.
+In Agnara, dependency injection separates caller-owned business input from runtime-owned dependencies. The compiled execution plan identifies dependency-backed parameters as protected runtime parameters, so callers provide business payload data while the runtime resolves registered dependencies. In `agnara==0.1.0a2`, supplying a protected runtime-owned parameter through `Invocation.payload` is rejected before the capability handler executes.
 
 ### What does the caller provide?
 The caller provides **only business data** via `Invocation.payload`. In our primary capability:
@@ -39,7 +39,7 @@ Agnara automatically resolves and injects runtime-owned dependencies into the ca
 - `repository: TaskRepository` (bound to `InMemoryTaskRepository`)
 - `analyzer: RiskAnalyzer` (configured with `RiskRules`)
 
-The caller never instantiates these dependencies and cannot override them.
+The caller never instantiates these dependencies. Attempts to supply protected runtime-owned parameters through `Invocation.payload` are rejected.
 
 ### What is a provider?
 A provider is a factory function decorated with `@provider(scope=...)` from `agnara.core.di`. It defines how to instantiate a dependency and assigns it a lifecycle scope (`Scope.SINGLETON` or `Scope.INVOCATION`).
@@ -62,14 +62,12 @@ This repository is a **frozen historical reference application**. It demonstrate
 
 ## Architectural Separation
 
-```text
-Capability Signature:
-
-prepare_task_plan(
-    task: str,                    <-- Caller-Owned (Public Input)
-    repository: TaskRepository,   <-- Runtime-Owned (Injected Dependency)
-    analyzer: RiskAnalyzer,       <-- Runtime-Owned (Injected Dependency)
-)
+```python
+def prepare_task_plan(
+    task: str,
+    repository: TaskRepository,
+    analyzer: RiskAnalyzer,
+) -> TaskPlan: ...
 ```
 
 | Parameter | Ownership | Origin | Validation / Resolution |

@@ -1,6 +1,6 @@
 # Dependency Injection in Agnara 0.1.0a2
 
-Agnara treats dependency injection not merely as an ergonomic object-wiring utility, but as an **architectural security and governance boundary**.
+In Agnara, dependency injection separates caller-owned business input from runtime-owned dependencies. The compiled execution plan identifies dependency-backed parameters as protected runtime parameters, so callers provide business payload data while the runtime resolves registered dependencies.
 
 This document is the core educational guide for **Agnara Historical Reference Application #002**, detailing how Agnara separates caller-owned capability inputs from runtime-owned dependencies.
 
